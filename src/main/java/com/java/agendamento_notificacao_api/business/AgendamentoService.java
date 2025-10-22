@@ -3,6 +3,7 @@ package com.java.agendamento_notificacao_api.business;
 import com.java.agendamento_notificacao_api.business.mapper.AgendamentoMapper;
 import com.java.agendamento_notificacao_api.controller.dto.AgendamentoRecord;
 import com.java.agendamento_notificacao_api.controller.out.AgendamentoRecordOut;
+import com.java.agendamento_notificacao_api.infrastructure.exception.NotFoudException;
 import com.java.agendamento_notificacao_api.infrastructure.repositories.AgendamentoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,5 +16,10 @@ public class AgendamentoService {
 
     public AgendamentoRecordOut gravarAgendamento(AgendamentoRecord agendamento){
         return agendamentoMapper.paraOut(repository.save(agendamentoMapper.paraEntity(agendamento)));
+    }
+
+    public AgendamentoRecordOut buscarAgendamentoPorId(Long id){
+         return agendamentoMapper.paraOut(
+                 repository.findById(id).orElseThrow(()->new NotFoudException("ID não encontrado")));
     }
 }
