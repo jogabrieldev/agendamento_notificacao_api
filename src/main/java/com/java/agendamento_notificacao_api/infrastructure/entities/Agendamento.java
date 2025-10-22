@@ -22,7 +22,7 @@ public class Agendamento {
     private String telefoneDestinatario;
     private LocalDateTime dataHoraEnvio;
     private LocalDateTime dataHoraAgendamento;
-    private LocalDateTime dataHoraNotificacao;
+    private LocalDateTime dataHoraModificacao;
     private String mensagem;
 
     @Enumerated(EnumType.STRING)

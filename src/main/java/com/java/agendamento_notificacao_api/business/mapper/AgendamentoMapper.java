@@ -13,6 +13,10 @@ public interface AgendamentoMapper {
 
     Agendamento paraEntity(AgendamentoRecord agendamento);
 
-    @Mapping(target = "statusNotificacao", source = "statusNotificacao") // 🔹 aqui está o segredo
+    @Mapping(target = "statusNotificacao", source = "statusNotificacao") //
     AgendamentoRecordOut paraOut(Agendamento agendamento);
+
+    @Mapping(target = "dataHoraModificacao", expression = "java(LocalDateTime.now())")
+    @Mapping(target = "statusNotificacao", expression = "java(StatusNotificacaoEnum.CANCELADO)")
+    Agendamento paraEntityCancelamento(Agendamento agendamento);
 }
