@@ -90,4 +90,9 @@ public class EntregaNotificacao {
         tentativas.add(tentativa);
         tentativa.setEntrega(this);
     }
+
+    public void adicionarEvento(OutboxEvent evento) {
+        eventos.add(evento);
+        evento.setEntrega(this);
+    }
 }

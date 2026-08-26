@@ -7,6 +7,7 @@ import com.java.agendamento_notificacao_api.controller.out.AgendamentoRecordOut;
 import com.java.agendamento_notificacao_api.infrastructure.entities.Agendamento;
 import com.java.agendamento_notificacao_api.infrastructure.enums.StatusNotificacaoEnum;
 import com.java.agendamento_notificacao_api.infrastructure.repositories.AgendamentoRepository;
+import com.java.agendamento_notificacao_api.infrastructure.repositories.OutboxEventRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +32,9 @@ public class AgendamentoServiceTest {
 
     @Mock
     private AgendamentoMapper agendamentoMapper;
+
+    @Mock
+    private OutboxEventRepository outboxEventRepository;
 
     private AgendamentoRecord agendamentoRecord;
     private AgendamentoRecordOut agendamentoRecordOut;
@@ -58,13 +62,14 @@ public class AgendamentoServiceTest {
     @Test
     void deveGravarAgendamentoComSucesso(){
          when(agendamentoMapper.paraEntity(agendamentoRecord)).thenReturn(agendamentoEntity);
-         when(agendamentoRepository.save(agendamentoEntity)).thenReturn(agendamentoEntity);
+         when(agendamentoRepository.saveAndFlush(agendamentoEntity)).thenReturn(agendamentoEntity);
          when(agendamentoMapper.paraOut(agendamentoEntity)).thenReturn(agendamentoRecordOut);
 
          AgendamentoRecordOut out = agendamentoService.gravarAgendamento(agendamentoRecord);
 
          verify(agendamentoMapper , times(1)).paraEntity(agendamentoRecord);
-         verify(agendamentoRepository , times(1)).save(agendamentoEntity);
+         verify(agendamentoRepository , times(1)).saveAndFlush(agendamentoEntity);
+         verify(outboxEventRepository, times(1)).saveAll(anyList());
          verify(agendamentoMapper, times(1)).paraOut(agendamentoEntity);
          assertThat(out).usingRecursiveComparison().isEqualTo(agendamentoRecordOut);
     }

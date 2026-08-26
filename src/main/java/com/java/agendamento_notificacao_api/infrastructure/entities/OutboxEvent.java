@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Table(
         name = "outbox_event",
-        indexes = @Index(name = "idx_outbox_status_criado_em", columnList = "status, criado_em")
+        indexes = @Index(name = "idx_outbox_status_disponivel_em", columnList = "status, disponivel_em")
 )
 @Entity
 @Getter
@@ -43,6 +43,9 @@ public class OutboxEvent {
     @Column(name = "criado_em", nullable = false)
     private LocalDateTime criadoEm;
 
+    @Column(name = "disponivel_em", nullable = false)
+    private LocalDateTime disponivelEm;
+
     @Column(name = "publicado_em")
     private LocalDateTime publicadoEm;
 
@@ -59,6 +62,9 @@ public class OutboxEvent {
         }
         if (criadoEm == null) {
             criadoEm = LocalDateTime.now();
+        }
+        if (disponivelEm == null) {
+            disponivelEm = criadoEm;
         }
         if (quantidadeTentativas == null) {
             quantidadeTentativas = 0;
