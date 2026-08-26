@@ -4,7 +4,7 @@ import com.java.agendamento_notificacao_api.infrastructure.enums.ResultadoTentat
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Table(
         name = "tentativa_entrega",
@@ -29,11 +29,11 @@ public class TentativaEntrega {
     @Column(name = "numero_tentativa", nullable = false)
     private Integer numeroTentativa;
 
-    @Column(name = "iniciada_em", nullable = false)
-    private LocalDateTime iniciadaEm;
+    @Column(name = "iniciada_em", nullable = false, columnDefinition = "timestamp with time zone")
+    private Instant iniciadaEm;
 
-    @Column(name = "finalizada_em")
-    private LocalDateTime finalizadaEm;
+    @Column(name = "finalizada_em", columnDefinition = "timestamp with time zone")
+    private Instant finalizadaEm;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
@@ -48,7 +48,7 @@ public class TentativaEntrega {
     @PrePersist
     private void prePersist() {
         if (iniciadaEm == null) {
-            iniciadaEm = LocalDateTime.now();
+            iniciadaEm = Instant.now();
         }
         if (resultado == null) {
             resultado = ResultadoTentativaEnum.INICIADA;

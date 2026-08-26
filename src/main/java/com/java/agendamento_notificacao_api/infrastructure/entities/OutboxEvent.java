@@ -4,7 +4,7 @@ import com.java.agendamento_notificacao_api.infrastructure.enums.StatusOutboxEnu
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Table(
@@ -40,14 +40,14 @@ public class OutboxEvent {
     @Column(nullable = false, length = 20)
     private StatusOutboxEnum status;
 
-    @Column(name = "criado_em", nullable = false)
-    private LocalDateTime criadoEm;
+    @Column(name = "criado_em", nullable = false, columnDefinition = "timestamp with time zone")
+    private Instant criadoEm;
 
-    @Column(name = "disponivel_em", nullable = false)
-    private LocalDateTime disponivelEm;
+    @Column(name = "disponivel_em", nullable = false, columnDefinition = "timestamp with time zone")
+    private Instant disponivelEm;
 
-    @Column(name = "publicado_em")
-    private LocalDateTime publicadoEm;
+    @Column(name = "publicado_em", columnDefinition = "timestamp with time zone")
+    private Instant publicadoEm;
 
     @Column(name = "quantidade_tentativas", nullable = false)
     private Integer quantidadeTentativas;
@@ -61,7 +61,7 @@ public class OutboxEvent {
             status = StatusOutboxEnum.PENDENTE;
         }
         if (criadoEm == null) {
-            criadoEm = LocalDateTime.now();
+            criadoEm = Instant.now();
         }
         if (disponivelEm == null) {
             disponivelEm = criadoEm;

@@ -5,7 +5,7 @@ import com.java.agendamento_notificacao_api.infrastructure.enums.StatusEntregaEn
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,14 +50,14 @@ public class EntregaNotificacao {
     @Column(name = "quantidade_tentativas", nullable = false)
     private Integer quantidadeTentativas;
 
-    @Column(name = "proxima_tentativa_em")
-    private LocalDateTime proximaTentativaEm;
+    @Column(name = "proxima_tentativa_em", columnDefinition = "timestamp with time zone")
+    private Instant proximaTentativaEm;
 
-    @Column(name = "processada_em")
-    private LocalDateTime processadaEm;
+    @Column(name = "processada_em", columnDefinition = "timestamp with time zone")
+    private Instant processadaEm;
 
-    @Column(name = "enviada_em")
-    private LocalDateTime enviadaEm;
+    @Column(name = "enviada_em", columnDefinition = "timestamp with time zone")
+    private Instant enviadaEm;
 
     @Column(name = "ultimo_erro", length = 1000)
     private String ultimoErro;

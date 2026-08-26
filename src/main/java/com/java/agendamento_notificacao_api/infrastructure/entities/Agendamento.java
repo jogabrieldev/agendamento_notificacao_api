@@ -4,7 +4,7 @@ import com.java.agendamento_notificacao_api.infrastructure.enums.StatusNotificac
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +18,8 @@ import java.util.List;
 public class Agendamento {
 
     public Agendamento(Long id, String emailDestinatario, String telefoneDestinatario,
-                       LocalDateTime dataHoraEnvio, LocalDateTime dataHoraAgendamento,
-                       LocalDateTime dataHoraModificacao, String mensagem,
+                       Instant dataHoraEnvio, Instant dataHoraAgendamento,
+                       Instant dataHoraModificacao, String mensagem,
                        StatusNotificacaoEnum statusNotificacao) {
         this.id = id;
         this.emailDestinatario = emailDestinatario;
@@ -37,9 +37,12 @@ public class Agendamento {
     private Long id;
     private String emailDestinatario;
     private String telefoneDestinatario;
-    private LocalDateTime dataHoraEnvio;
-    private LocalDateTime dataHoraAgendamento;
-    private LocalDateTime dataHoraModificacao;
+    @Column(columnDefinition = "timestamp with time zone")
+    private Instant dataHoraEnvio;
+    @Column(columnDefinition = "timestamp with time zone")
+    private Instant dataHoraAgendamento;
+    @Column(columnDefinition = "timestamp with time zone")
+    private Instant dataHoraModificacao;
     private String mensagem;
 
     @Enumerated(EnumType.STRING)
@@ -62,7 +65,7 @@ public class Agendamento {
     @PrePersist
     private void prePersist(){
         if (dataHoraAgendamento == null)
-            dataHoraAgendamento = LocalDateTime.now();
+            dataHoraAgendamento = Instant.now();
         if (statusNotificacao == null)
             statusNotificacao = StatusNotificacaoEnum.AGENDADO;
     }
