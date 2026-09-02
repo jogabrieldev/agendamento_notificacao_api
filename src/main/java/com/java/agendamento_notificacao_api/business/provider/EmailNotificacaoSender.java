@@ -25,8 +25,7 @@ public class EmailNotificacaoSender implements NotificacaoSender {
     @Override
     public String enviar(EntregaNotificacao entrega) {
         String providerMessageId = "email-simulated-" + UUID.randomUUID();
-        log.info("E-mail simulado: destinatario={}, providerMessageId={}",
-                entrega.getDestinatario(), providerMessageId);
+        log.info("E-mail simulado: destinatario={}, providerMessageId={}", entrega.getDestinatario(), providerMessageId);
         return providerMessageId;
     }
 }

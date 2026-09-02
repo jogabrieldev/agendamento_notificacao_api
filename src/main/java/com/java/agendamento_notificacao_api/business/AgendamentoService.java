@@ -71,8 +71,7 @@ public class AgendamentoService {
                 tamanho,
                 Sort.by(Sort.Direction.DESC, "dataHoraAgendamento")
         );
-        Page<AgendamentoResumoResponse> resultado = repository.findAll(pageRequest)
-                .map(this::paraResumo);
+        Page<AgendamentoResumoResponse> resultado = repository.findAll(pageRequest).map(this::paraResumo);
         return PaginaResponse.de(resultado);
     }
 
