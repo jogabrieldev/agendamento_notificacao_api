@@ -4,6 +4,8 @@ API REST para agendar, acompanhar e cancelar notificações enviadas por e-mail 
 
 Atualmente, os provedores de e-mail e SMS funcionam em modo de simulação. Nesse modo, nenhuma mensagem real é enviada: a aplicação registra o processamento no log e gera um identificador fictício do provedor.
 
+O modo `production` habilita integrações isoladas com Resend para e-mail e Twilio para SMS, sem remover o modo simulado. Para ativá-lo, configure `notification.provider.mode=production` e forneça `RESEND_API_KEY`, `RESEND_FROM`, `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN` e `TWILIO_FROM` por variáveis de ambiente. O telefone destinatário deve usar o padrão internacional E.164, por exemplo `+5511999999999`.
+
 ## Regra de negócio
 
 Um agendamento contém uma mensagem, uma data futura para envio e pelo menos um destinatário, que pode ser um endereço de e-mail, um telefone ou ambos.

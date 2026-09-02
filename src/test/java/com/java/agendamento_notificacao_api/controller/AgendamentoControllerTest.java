@@ -60,7 +60,7 @@ class AgendamentoControllerTest {
         OffsetDateTime envio = OffsetDateTime.of(2027, 1, 2, 11, 1, 1, 0, ZoneOffset.ofHours(-3));
         AgendamentoRequest request = new AgendamentoRequest(
                 "email@email.com",
-                "5562999526384",
+                "+5562999526384",
                 "Mensagem de teste",
                 envio
         );
@@ -100,6 +100,42 @@ class AgendamentoControllerTest {
                         .content(objectMapper.writeValueAsBytes(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(400));
+
+        verifyNoInteractions(agendamentoService);
+    }
+
+    @Test
+    void deveRejeitarEmailSemDominioCompleto() throws Exception {
+        AgendamentoRequest request = new AgendamentoRequest(
+                "cliente@localhost",
+                null,
+                "Mensagem de teste",
+                OffsetDateTime.of(2027, 1, 2, 11, 1, 1, 0, ZoneOffset.ofHours(-3))
+        );
+
+        mockMvc.perform(post("/api/v1/agendamentos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.campos.emailDestinatario").exists());
+
+        verifyNoInteractions(agendamentoService);
+    }
+
+    @Test
+    void deveRejeitarTelefoneForaDoPadraoE164() throws Exception {
+        AgendamentoRequest request = new AgendamentoRequest(
+                null,
+                "(62) 99999-9999",
+                "Mensagem de teste",
+                OffsetDateTime.of(2027, 1, 2, 11, 1, 1, 0, ZoneOffset.ofHours(-3))
+        );
+
+        mockMvc.perform(post("/api/v1/agendamentos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.campos.telefoneDestinatario").exists());
 
         verifyNoInteractions(agendamentoService);
     }

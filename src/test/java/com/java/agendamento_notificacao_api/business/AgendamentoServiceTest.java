@@ -53,7 +53,7 @@ class AgendamentoServiceTest {
         Instant agora = Instant.parse("2026-08-26T18:00:00Z");
         request = new AgendamentoRequest(
                 "email@email.com",
-                "5562999526384",
+                "+5562999526384",
                 "Por favor, retorne à loja com urgência",
                 envio
         );
